@@ -1,12 +1,13 @@
 #!/usr/bin/python3
 """This module converts markdown to html"""
 
+
 def parseParagraphs(input):
     """This function parses paragraphs for md"""
     newIn = []
     para = False
     for i in input:
-        if i[0] not in ['*','-','#','\n']:
+        if i[0] not in ['*', '-', '#', '\n']:
             if para:
                 newIn.append('<br />\n' + i)
             else:
@@ -18,6 +19,7 @@ def parseParagraphs(input):
         else:
             newIn.append(i)
     return newIn
+
 
 def parseHeadings(input):
     """This function parses headings for md"""
@@ -35,13 +37,16 @@ def parseHeadings(input):
             newIn.append(i)
     return newIn
 
+
 def parseLists(input):
     """This function parses lists for md"""
     pass
 
+
 def parseStyles(input):
     """This function parses styles for md"""
     pass
+
 
 if __name__ == "__main__":
     from sys import argv
@@ -62,5 +67,3 @@ if __name__ == "__main__":
     input = parseHeadings(input)
     input = parseLists(input)
     input = parseStyles(input)
-
-
