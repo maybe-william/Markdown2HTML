@@ -6,13 +6,13 @@ def parseParagraphs(input):
     newIn = []
     para = False
     for i in input:
-        if i[0] not in ['*', '-', '#', '\n']:
+        if len(i) > 0 and i[0] not in ['*', '-', '#', '\n']:
             if para:
                 newIn.append('<br />\n' + i)
             else:
                 para = True
                 newIn.append('<p>\n' + i)
-        elif i[0] == '\n':
+        elif len(i) == 0 or i[0] == '\n':
             para = False
             newIn.append("</p>\n")
         else:
@@ -50,7 +50,7 @@ def parseStyles(input):
 def do_main():
     from sys import argv
     from os import path
-    if len(argv) != 3:
+    if len(argv) < 3:
         print("Usage: ./markdown2html.py README.md README.html")
         exit(1)
     if not path.exists(argv[1]):
@@ -63,6 +63,6 @@ def do_main():
     input = [x.rstrip('\n') for x in input]
 
     input = parseParagraphs(input)
-    input = parseHeadings(input)
-    input = parseLists(input)
-    input = parseStyles(input)
+    #input = parseHeadings(input)
+    #input = parseLists(input)
+    #input = parseStyles(input)
