@@ -3,6 +3,7 @@
 
 def parseParagraphs(input):
     """This function parses paragraphs for md"""
+    input.append("")
     newIn = []
     para = False
     for i in input:
@@ -12,11 +13,12 @@ def parseParagraphs(input):
             else:
                 para = True
                 newIn.append('<p>\n' + i)
-        elif len(i) == 0 or i[0] == '\n':
+        elif (len(i) == 0 or i[0] == '\n') and para:
             para = False
             newIn.append("</p>\n")
         else:
             newIn.append(i)
+    newIn[-1] = newIn[-1].rstrip('\n')
     return newIn
 
 
@@ -66,3 +68,7 @@ def do_main():
     #input = parseHeadings(input)
     #input = parseLists(input)
     #input = parseStyles(input)
+
+    with open(argv[2], "w") as f:
+        for x in input:
+            f.write(x + "\n")
