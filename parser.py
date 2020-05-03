@@ -12,13 +12,15 @@ def parseParagraphs(input):
     for i in input:
         if len(i) > 0 and i[0] not in ['*', '-', '#', '\n']:
             if para:
-                newIn.append('<br />\n' + i)
+                newIn.append('<br />')
+                newIn.append(i)
             else:
                 para = True
-                newIn.append('<p>\n' + i)
+                newIn.append('<p>')
+                newIn.append(i)
         elif (len(i) == 0 or i[0] == '\n') and para:
             para = False
-            newIn.append("</p>\n")
+            newIn.append("</p>")
         else:
             newIn.append(i)
     newIn[-1] = newIn[-1].rstrip('\n')
