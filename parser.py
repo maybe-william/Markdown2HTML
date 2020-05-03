@@ -90,6 +90,7 @@ def parseLists(input):
 
 def parseStyles(input):
     """This function parses styles for md"""
+
     def do_md5(string):
         """Do an md5 hash of the string"""
         x = hashlib.md5(string.encode('utf-8')).hexdigest()
@@ -161,32 +162,17 @@ def do_main():
         input = f.readlines()
     input = ''.join(input).split('\n')
 
-#    print(input)
-#    print()
-
     input = parseStyles(input)
     input = '\n'.join(input).split('\n')
-
-#    print(input)
-#    print()
 
     input = parseParagraphs(input)
     input = '\n'.join(input).split('\n')
 
-#    print(input)
-#    print()
-
     input = parseLists(input)
     input = '\n'.join(input).split('\n')
 
-#    print(input)
-#    print()
-
     input = parseHeadings(input)
     input = '\n'.join(input).split('\n')
-
-#    print(input)
-#    print()
 
     with open(argv[2], "w") as f:
         for x in input:
