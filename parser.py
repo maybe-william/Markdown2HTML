@@ -1,6 +1,9 @@
 #!/usr/bin/python3
 """This module hides the code from the checker to make the main file pass style checks more easily."""
 
+def matches(line, thing):
+    """check if a line of text matches the given type (h, p, ul, ol, )"""
+
 def parseParagraphs(input):
     """This function parses paragraphs for md"""
     input.append("")
@@ -26,27 +29,29 @@ def parseHeadings(input):
     """This function parses headings for md"""
     newIn = []
     for i in input:
-        if i[0] == '#':
-            count = 0
-            for x in i:
-                if x == '#':
-                    count = count + 1
-            tag = 'h' + str(count)
-            inner = ''.join(i.split(' ')[1:])
-            newIn.append('<{}>{}</{}>'.format(tag, inner, tag))
-        else:
-            newIn.append(i)
+        if len(i) > 0 and i[0] == '#':
+            #then it's a heading
+            num = 0
+            while num < len(i) and i[num] == '#':
+                num = num + 1
+            if num > 6:
+                num = 6
+            tag = "h"+str(num)
+            i = i.lstrip('#')
+            i = i.lstrip(' ')
+            i = "<"+tag+">"+i+"</"+tag+">"
+        newIn.append(i)
     return newIn
 
 
 def parseLists(input):
     """This function parses lists for md"""
-    pass
+    return input
 
 
 def parseStyles(input):
     """This function parses styles for md"""
-    pass
+    return input
 
 
 def do_main():
@@ -62,12 +67,34 @@ def do_main():
     input = []
     with open(argv[1]) as f:
         input = f.readlines()
-    input = [x.rstrip('\n') for x in input]
+    input = ''.join(input).split('\n')
+
+#    print(input)
+#    print()
+
+    input = parseStyles(input)
+    input = '\n'.join(input).split('\n')
+
+#    print(input)
+#    print()
 
     input = parseParagraphs(input)
-    #input = parseHeadings(input)
-    #input = parseLists(input)
-    #input = parseStyles(input)
+    input = '\n'.join(input).split('\n')
+
+#    print(input)
+#    print()
+
+    input = parseLists(input)
+    input = '\n'.join(input).split('\n')
+
+#    print(input)
+#    print()
+
+    input = parseHeadings(input)
+    input = '\n'.join(input).split('\n')
+
+#    print(input)
+#    print()
 
     with open(argv[2], "w") as f:
         for x in input:
