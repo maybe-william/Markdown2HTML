@@ -3,6 +3,7 @@
 
 
 import re
+import hashlib
 
 
 def parseParagraphs(input):
@@ -91,10 +92,14 @@ def parseStyles(input):
     """This function parses styles for md"""
     def do_md5(string):
         """Do an md5 hash of the string"""
-        return string
+        x = hashlib.md5(string.encode('utf-8')).hexdigest()
+        return x
+
     def remove_cs(string):
         """Remove cs from a string"""
-        return string
+        x = string.replace("c", "")
+        x = x.replace("C", "")
+        return x
 
     newIn = []
     for i in input:
@@ -105,9 +110,6 @@ def parseStyles(input):
             noC = re.compile('\(\([^\(\)]*\)\)')
 
             first_bold = bold.search(i)
-            first_italic = italic.search(i)
-            first_md5 = md5.search(i)
-            first_noC = noC.search(i)
 
             while first_bold:
                 first_part = i[:first_bold.start()]
@@ -116,12 +118,29 @@ def parseStyles(input):
                 i = first_part+"<b>"+middle_part+"</b>"+end_part
                 first_bold = bold.search(i)
 
+            first_italic = italic.search(i)
             while first_italic:
                 first_part = i[:first_italic.start()]
                 middle_part = i[first_italic.start()+2:first_italic.end()-2]
                 end_part = i[first_italic.end():]
                 i = first_part+"<em>"+middle_part+"</em>"+end_part
                 first_italic = italic.search(i)
+
+            first_md5 = md5.search(i)
+            while first_md5:
+                first_part = i[:first_md5.start()]
+                middle_part = do_md5(i[first_md5.start()+2:first_md5.end()-2])
+                end_part = i[first_md5.end():]
+                i = first_part+middle_part+end_part
+                first_md5 = md5.search(i)
+
+            first_noC = noC.search(i)
+            while first_noC:
+                first_part = i[:first_noC.start()]
+                middle_part = remove_cs(i[first_noC.start()+2:first_noC.end()-2])
+                end_part = i[first_noC.end():]
+                i = first_part+middle_part+end_part
+                first_noC = noC.search(i)
 
         newIn.append(i)
     return newIn
