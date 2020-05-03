@@ -46,7 +46,23 @@ def parseHeadings(input):
 
 def parseLists(input):
     """This function parses lists for md"""
-    return input
+    newIn = []
+    ul = False
+    for i in input:
+        if len(i) > 0 and i[0] == '-':
+            if ul:
+                newIn.append('<li>' + i[1:].lstrip(' ') + '</li>')
+            else:
+                ul = True
+                newIn.append('<ul>')
+                newIn.append('<li>' + i[1:].lstrip(' ') + '</li>')
+        elif (len(i) == 0 or i[0] != '-') and ul:
+            ul = False
+            newIn.append("</ul>")
+            newIn.append(i)
+        else:
+            newIn.append(i)
+    return newIn
 
 
 def parseStyles(input):
