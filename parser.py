@@ -62,6 +62,25 @@ def parseLists(input):
             newIn.append(i)
         else:
             newIn.append(i)
+
+    input = newIn[:]
+    newIn = []
+    ol = False
+    for i in input:
+        if len(i) > 0 and i[0] == '*':
+            if ol:
+                newIn.append('<li>' + i[1:].lstrip(' ') + '</li>')
+            else:
+                ol = True
+                newIn.append('<ol>')
+                newIn.append('<li>' + i[1:].lstrip(' ') + '</li>')
+        elif (len(i) == 0 or i[0] != '*') and ol:
+            ol = False
+            newIn.append("</ol>")
+            newIn.append(i)
+        else:
+            newIn.append(i)
+
     return newIn
 
 
